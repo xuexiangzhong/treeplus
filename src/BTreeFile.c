@@ -368,7 +368,7 @@ void initFirstPage(struct FastTreeDb *db) {
         int  startoff = prefixsize + db->dynamicIndexNum * 8 +4;//初始偏移位置
         memmove(&indexb[prefixsize],&startoff, 4);//设置起始第一个key偏移量
         unsigned int  startinitsize = 1;
-        memmove(&indexb[prefixsize + 4],&startinitsize, 4);//设置第一个key的长度为1
+        memmove(&indexb[prefixsize + 4],&startinitsize, 4);//设置第一个key的长度值
 
         //设置偏移量位置的值
         unsigned int space = startoff + 5;//已占用空间的偏移量  第一个key是一个字节，加上页号4字节 共占用5字节
@@ -376,7 +376,7 @@ void initFirstPage(struct FastTreeDb *db) {
 
 //        memset(&indexb[prefixsize+8], 0,sizenum-8);//将索引位设置位
         memset(&indexb[startoff],0, 1);//4个字节 设置前缀key 1位 值位0
-        memmove(&indexb[startoff+ 1],p, 4);//4个字节 设置data页号
+        memmove(&indexb[startoff+ 1],&p, 4);//4个字节 设置data页号
     }
     pwrite(indexfd,indexb,db->indexPageSize,0);//从0的位置开始写入root索引页1
     close(indexfd);
@@ -1877,7 +1877,11 @@ unsigned int selectPageByDbKey(struct FastTreeDb *db,unsigned int pageNum,int ty
                 }else{
                     //这里没查到相等key需要注意 假设start为2  那么说明自己本身的index位置是1
                     // 但是并不是在1的位置页找，而是在前一位的页中寻找
-                    start = start -1;
+                    if(start >= 2){
+                        start = start -1;
+                    }
+                    //如果本身返回1 说明本身页是第一个,索引位置为0，因为第一个页前面没有页了 所以还是插入到本身页 等分裂的时候在重写索引key
+//                    start = start -1;
                 }
 //                byte *p = &b[keystart + (start - 1) * (db->keySize + IndexKeySize) + db->keySize];//mid为中间位
                 byte *p = b+keystart + (start - 1) * (db->keySize + IndexKeySize) + db->keySize;//mid为中间位
@@ -1905,7 +1909,11 @@ unsigned int selectPageByDbKey(struct FastTreeDb *db,unsigned int pageNum,int ty
                 }else{
                     //这里没查到相等key需要注意 假设start为2  那么说明自己本身的index位置是1
                     // 但是并不是在1的位置页找，而是在前一位的页中寻找
-                    start = start -1;
+                    if(start >= 2){
+                        start = start -1;
+                    }
+                    //如果本身返回1 说明本身页是第一个,索引位置为0，因为第一个页前面没有页了 所以还是插入到本身页 等分裂的时候在重写索引key
+//                    start = start -1;
                 }
 //                byte *p = &b[keystart + (start - 1) * (db->keySize + IndexKeySize) + db->keySize];//mid为中间位
                 unsigned int * curoff  = b+keystart + (start - 1) * 8; //前4位是offset 后4位是size
