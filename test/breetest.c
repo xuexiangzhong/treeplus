@@ -44,7 +44,7 @@ int main() {
 void TreeTestDy() {
     // 0 默认byte型 1 字符串型 2 整型 3 浮点数型
     struct FastTreeDb* db = treedb_init("./testdy",4096,4096,0,0,128,128,0);
-//    testdbinsertDy(db,1*10000,0);//isrand 1为随机生成key value  为其他值表示生成顺序指定key value测试
+//    testdbinsertDy(db,10*10000,0);//isrand 1为随机生成key value  为其他值表示生成顺序指定key value测试
 //    testPrintTreeAll(db);//打印所有key vale值  检查上面的执行结果
     //查询使用
     testSeekTree(db);
