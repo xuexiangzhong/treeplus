@@ -22,11 +22,12 @@ test下面是一些测试，上面演示了重要功能的使用方式
 ##### 5 关闭库 
 方法 ： closedb
 
-#### 综合使用示例参考 TreeTest （定长）
+### 综合使用示例参考
+####  TreeTest （定长）
 ##### 1 testdbinsert 定长元素插入 
 ##### 2 testPrintTreeAll(db); 所有元素打印
-##### 3 testSeekTree(db); 
-#### 元素获取遍历 TreeTestDy（不定长）
+##### 3 testSeekTree(db); 元素获取遍历 
+####  TreeTestDy（不定长）
 ##### 1 testdbinsertDy(db,1*10000,0); 不定长元素插入
 ##### 2 testPrintTreeAll(db); 所有元素打印 
 ##### 3 testSeekTree(db); 元素获取遍历
